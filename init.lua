@@ -2,9 +2,12 @@ local network = require "orca.network"
 local json = require "orca.parsers.json"
 
 local openai = {}
-local openai_key = os.getenv "OPENAI_API_KEY"
 
-assert(openai_key, "OPENAI_API_KEY environment variable is not set")
+local get_openai_key = function()
+	local openai_key = os.getenv "OPENAI_API_KEY"
+	assert(openai_key, "OPENAI_API_KEY environment variable is not set")
+	return openai_key
+end
 
 local room_schema = {
   type = "object",
@@ -101,7 +104,7 @@ function openai.test(system, user)
 		body = json.encode(data),
 		headers = {
 			["Content-Type"] = "application/json; charset=utf-8",
-			["Authorization"] = "Bearer " .. openai_key,
+			["Authorization"] = "Bearer " .. get_openai_key(),
 		},
 		nocookies = true
 	})
@@ -119,7 +122,7 @@ function openai.simple(input)
 		body = json.encode(data),
 		headers = {
 			["Content-Type"] = "application/json; charset=utf-8",
-			["Authorization"] = "Bearer " .. openai_key,
+			["Authorization"] = "Bearer " .. get_openai_key(),
 		},
 		nocookies = true
 	})
@@ -147,7 +150,7 @@ function openai.chat_completions(system, user)
 		body = json.encode(data),
 		headers = {
 			["Content-Type"] = "application/json; charset=utf-8",
-			["Authorization"] = "Bearer " .. openai_key,
+			["Authorization"] = "Bearer " .. get_openai_key(),
 		},
 		nocookies = true
 	})
